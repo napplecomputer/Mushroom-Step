@@ -20,6 +20,7 @@ public class ShortcutPackages implements BaseColumns {
     public static final String COLUMN_PACKAGE_NAME = "package_name";
     public static final String COLUMN_ACTIVITY_NAME = "activity_name";
     public static final String COLUMN_IS_UNINSTALLED = "is_uninstalled";
+    public static final String COLUMN_LABEL = "label";
 
     public static Uri getContentsUri(long id) {
         return Uri.parse(String.format(CONTENT_ITEM_URI_FORMAT, AUTHORITY,

@@ -40,6 +40,7 @@ public class ShortcutPackagesProvider extends ContentProvider {
         mProjectionMap.put(ShortcutPackages.COLUMN_ACTIVITY_NAME, ShortcutPackages.COLUMN_ACTIVITY_NAME);
         mProjectionMap.put(ShortcutPackages.COLUMN_PACKAGE_NAME, ShortcutPackages.COLUMN_PACKAGE_NAME);
         mProjectionMap.put(ShortcutPackages.COLUMN_IS_UNINSTALLED, ShortcutPackages.COLUMN_IS_UNINSTALLED);
+        mProjectionMap.put(ShortcutPackages.COLUMN_LABEL, ShortcutPackages.COLUMN_LABEL);
     }
 
     @Override

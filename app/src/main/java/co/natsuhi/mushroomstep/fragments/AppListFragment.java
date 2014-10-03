@@ -30,7 +30,7 @@ public class AppListFragment extends ListFragment {
         public void onLoadFinished(Loader<List<AppLoader.AppEntry>> loader, List<AppLoader.AppEntry> data) {
             mAppListAdapter.setData(data);
 
-            if(isResumed()) {
+            if (isResumed()) {
                 setListShown(true);
             } else {
                 setListShownNoAnimation(true);
@@ -53,20 +53,21 @@ public class AppListFragment extends ListFragment {
         setListAdapter(mAppListAdapter);
         setListShown(false);
 
-        getLoaderManager().initLoader(0,null,mLoaderCallbacks);
+        getLoaderManager().initLoader(0, null, mLoaderCallbacks);
 
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AppLoader.AppEntry app = mAppListAdapter.getItem(position);
                 Log.d(TAG, "onItemClick");
-                Log.d(TAG, "app:"+ app.getLabel());
+                Log.d(TAG, "app:" + app.getLabel());
 
 
                 ContentValues contentValues = new ContentValues();
-                contentValues.put(ShortcutPackages.COLUMN_ACTIVITY_NAME,app.getActivityName());
-                contentValues.put(ShortcutPackages.COLUMN_PACKAGE_NAME,app.getPackageName());
-                getActivity().getContentResolver().insert(ShortcutPackages.COUNTENT_URI,contentValues);
+                contentValues.put(ShortcutPackages.COLUMN_ACTIVITY_NAME, app.getActivityName());
+                contentValues.put(ShortcutPackages.COLUMN_PACKAGE_NAME, app.getPackageName());
+                contentValues.put(ShortcutPackages.COLUMN_LABEL, app.getLabel());
+                getActivity().getContentResolver().insert(ShortcutPackages.COUNTENT_URI, contentValues);
             }
         });
 

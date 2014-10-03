@@ -15,6 +15,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
             + ShortcutPackages._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + ShortcutPackages.COLUMN_PACKAGE_NAME + " TEXT NOT NULL,"
             + ShortcutPackages.COLUMN_ACTIVITY_NAME + " TEXT NOT NULL,"
+            + ShortcutPackages.COLUMN_LABEL + " TEXT NOT NULL,"
             + ShortcutPackages.COLUMN_IS_UNINSTALLED + " INTEGER NOT NULL DEFAULT 0 CHECK(" + ShortcutPackages.COLUMN_IS_UNINSTALLED + " IN (0, 1))"
             + " )";
 
