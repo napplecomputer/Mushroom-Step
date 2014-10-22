@@ -3,18 +3,22 @@ package co.natsuhi.mushroomstep.fragments;
 
 import android.app.ListFragment;
 import android.app.LoaderManager;
+import android.content.ComponentName;
 import android.content.CursorLoader;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.widget.SimpleCursorAdapter;
 
+import co.natsuhi.mushroomstep.R;
+import co.natsuhi.mushroomstep.ShortcutListAdapter;
 import co.natsuhi.mushroomstep.db.ShortcutPackages;
 
 public class ShortcutPackageListFragment extends ListFragment {
     private static final String TAG = ShortcutPackageListFragment.class.getSimpleName();
 
-    private SimpleCursorAdapter mSimpleCursorAdapter;
+    private ShortcutListAdapter mShortcutListAdapter;
 
     private LoaderManager.LoaderCallbacks<Cursor> mLoaderCallbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
         @Override
@@ -29,12 +33,12 @@ public class ShortcutPackageListFragment extends ListFragment {
 
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-            mSimpleCursorAdapter.swapCursor(data);
+            mShortcutListAdapter.swapCursor(data);
         }
 
         @Override
         public void onLoaderReset(Loader<Cursor> loader) {
-            mSimpleCursorAdapter.swapCursor(null);
+            mShortcutListAdapter.swapCursor(null);
         }
     };
 
@@ -45,9 +49,24 @@ public class ShortcutPackageListFragment extends ListFragment {
 //        setEmptyText("hoge");
 
         String[] from = new String[]{ShortcutPackages.COLUMN_LABEL};
-        int[] to = {android.R.id.text1};
-        mSimpleCursorAdapter = new SimpleCursorAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, null, from, to, 0);
-        setListAdapter(mSimpleCursorAdapter);
+        int[] to = {R.id.text};
+        int imageTo = R.id.icon;
+        ShortcutListAdapter.ImageGenerator imageGenerator = new ShortcutListAdapter.ImageGenerator() {
+            @Override
+            public Drawable generateImage(Cursor cursor, PackageManager packageManager) {
+                String packageName = cursor.getString(cursor.getColumnIndex(ShortcutPackages.COLUMN_PACKAGE_NAME));
+                String activityName = cursor.getString(cursor.getColumnIndex(ShortcutPackages.COLUMN_ACTIVITY_NAME));
+                ComponentName componentName = new ComponentName(packageName, activityName);
+                try {
+                    return packageManager.getActivityIcon(componentName);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+        };
+        mShortcutListAdapter = new ShortcutListAdapter(getActivity().getApplicationContext(), R.layout.applist, null, from, to, imageTo, imageGenerator, 0);
+        setListAdapter(mShortcutListAdapter);
 
         LoaderManager loaderManager = getLoaderManager();
         loaderManager.initLoader(0, null, mLoaderCallbacks);
