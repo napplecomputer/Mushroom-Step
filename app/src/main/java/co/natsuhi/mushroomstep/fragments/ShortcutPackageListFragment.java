@@ -14,6 +14,7 @@ import android.os.Bundle;
 import co.natsuhi.mushroomstep.R;
 import co.natsuhi.mushroomstep.ShortcutListAdapter;
 import co.natsuhi.mushroomstep.db.ShortcutPackages;
+import co.natsuhi.mushroomstep.utils.ShortcutPackageGeneretor;
 
 public class ShortcutPackageListFragment extends ListFragment {
     private static final String TAG = ShortcutPackageListFragment.class.getSimpleName();
@@ -54,9 +55,8 @@ public class ShortcutPackageListFragment extends ListFragment {
         ShortcutListAdapter.ImageGenerator imageGenerator = new ShortcutListAdapter.ImageGenerator() {
             @Override
             public Drawable generateImage(Cursor cursor, PackageManager packageManager) {
-                String packageName = cursor.getString(cursor.getColumnIndex(ShortcutPackages.COLUMN_PACKAGE_NAME));
-                String activityName = cursor.getString(cursor.getColumnIndex(ShortcutPackages.COLUMN_ACTIVITY_NAME));
-                ComponentName componentName = new ComponentName(packageName, activityName);
+                ShortcutPackageGeneretor shortcutPackageGeneretor = new ShortcutPackageGeneretor(cursor);
+                ComponentName componentName = shortcutPackageGeneretor.generateComponentName();
                 try {
                     return packageManager.getActivityIcon(componentName);
                 } catch (PackageManager.NameNotFoundException e) {
